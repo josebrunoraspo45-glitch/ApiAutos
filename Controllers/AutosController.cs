@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using ApiAutos.Data;
 using ApiAutos.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +7,11 @@ namespace ApiAutos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AutoController : ControllerBase
+    public class AutosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public AutoController(ApplicationDbContext context)
+        public AutosController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -74,7 +73,7 @@ namespace ApiAutos.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuto(int id)
         {
-            var auto = await _context.Autos.FindAsync();
+            var auto = await _context.Autos.FindAsync(id);
             if (auto == null)
             {
                 return NotFound();
@@ -82,7 +81,7 @@ namespace ApiAutos.Controllers
 
             if (auto.Disponible == true)
             {
-                return BadRequest("El vehiculo esta disponible y no puede ser eleminado.");
+                return BadRequest("El vehiculo esta disponible y no puede ser eliminado.");
             }
 
             _context.Autos.Remove(auto);
